@@ -112,12 +112,12 @@ services:
 
 
 
-  remixide:
-    ports:
-      - 7280:8080
-    build:
-      context: ./remixide
-    container_name: remixide
+#  remixide:
+#    ports:
+#      - 7280:8080
+#    build:
+#      context: ./remixide
+#    container_name: remixide
 
 
 networks:
