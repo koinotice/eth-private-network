@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.3'
 services:
   netstats:
     hostname: netstats
@@ -11,6 +11,7 @@ services:
       WS_SECRET: ${NETSTATS_SECRET}
     networks:
       - research
+
   bootnode:
     container_name: bootnode
     build:
@@ -109,22 +110,11 @@ services:
     networks:
       - research
 
-  explorer:
-    depends_on:
-      - node
-    environment:
-      GETH_NODE_IP: 127.0.0.1
-    build:
-      context: explorer
-    container_name: explorer
-    ports:
-      - 7210:8000
-    networks:
-      - research
+
 
   remixide:
     ports:
-      - 7220:8080
+      - 7280:8080
     build:
       context: ./remixide
     container_name: remixide

@@ -1,10 +1,14 @@
-FROM node:8-alpine
+FROM node:6.11-alpine
 
-RUN apk add --no-cache git make python g++
-RUN git clone https://github.com/ethnamed/eth-explorer.git
+WORKDIR "/opt"
 
-WORKDIR /eth-explorer
-RUN npm install -g bower && npm install && bower install --allow-root
-CMD sed -i "s/209.126.79.177/$GETH_NODE_IP/" app/config.json && npm start
+RUN apk add --update git make g++ && \
+    git clone https://bitbucket.org/designisdead/blockchain-explorer.git
 
-EXPOSE 8000
+WORKDIR "/opt/blockchain-explorer"
+RUN git checkout c6e12f1
+RUN npm install
+
+CMD npm run start
+
+EXPOSE 8080
