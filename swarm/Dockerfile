@@ -10,21 +10,19 @@ RUN add-apt-repository -y ppa:ethereum/ethereum
 
 ARG binary
 RUN apt-get update \
-     && apt-get install -y ethereum
+     && apt-get install -y geth ethereum-swarm
 
 ARG password
 ARG privatekey
 RUN echo $password > ~/.accountpassword
 RUN echo $privatekey > ~/.privatekey
-ADD ./genesis.json ./genesis.json
-RUN geth init genesis.json
 RUN geth account import --password ~/.accountpassword  ~/.privatekey
 
 ENV address=""
 ENV bootnodeId=""
 ENV bootnodeIp=""
 
-CMD exec geth --bootnodes "enode://$bootnodeId@$bootnodeIp:30301" --networkid "112358" --verbosity=4 --rpc --rpcaddr "0.0.0.0" --rpcapi "eth,web3,net,admin,debug,db" --rpccorsdomain "*" --syncmode="full"
+CMD exec swarm --bootnodes "enode://$bootnodeId@$bootnodeIp:30399" --password ~/.accountpassword --bzzaccount $address --datadir .ethereum --keystore .ethereum/keystore --bzzapi "0.0.0.0" -corsdomain "*" -httpaddr "0.0.0.0"
 
-EXPOSE 8545
-EXPOSE 30303
+EXPOSE 8500
+EXPOSE 33099
