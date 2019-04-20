@@ -7,6 +7,7 @@ RUN geth init genesis.json
 
 # geth
 EXPOSE 8545
+EXPOSE 8546
 EXPOSE 30303
 
 # bootnode

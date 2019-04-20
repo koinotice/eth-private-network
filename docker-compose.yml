@@ -3,7 +3,7 @@ services:
   netstats:
     hostname: netstats
     ports:
-      - 3000:3000
+      - 7200:3000
     build:
       context: netstats
     container_name: netstats
@@ -28,7 +28,7 @@ services:
       context: node
     container_name: node
     ports:
-      - 8545:8545
+      - 8544:8545
     command: geth
       --syncmode full
       --bootnodes enode://${BOOTNODE_ID}@172.3.0.111:30301
@@ -45,12 +45,14 @@ services:
       context: node
     container_name: node-miner-1
     ports:
+      - 8545:8545
       - 8546:8545
     command: geth
       --syncmode full
       --bootnodes enode://${BOOTNODE_ID}@172.3.0.111:30301
       --networkid ${NETWORK_ID}
       --rpc --rpcaddr 0.0.0.0 --rpccorsdomain "*" --rpcapi "eth,web3,net,admin,db,miner"
+      --ws --wsport 8546 --wsorigins "*" --wsaddr=0.0.0.0
       --mine --miner.etherbase ${ACCOUNT_1}
       --unlock ${ACCOUNT_1} --password password.txt
       --ethstats node-miner-1:${NETSTATS_SECRET}@netstats:3000
@@ -116,9 +118,18 @@ services:
       context: explorer
     container_name: explorer
     ports:
-      - 8000:8000
+      - 7210:8000
     networks:
       - research
+
+  remixide:
+    ports:
+      - 7220:8080
+    build:
+      context: ./remixide
+    container_name: remixide
+
+
 networks:
   research:
     driver: bridge
